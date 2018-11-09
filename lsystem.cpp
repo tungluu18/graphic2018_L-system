@@ -53,13 +53,12 @@ typedef pair<pair<Point, Point>, Colour> DrawState;
 
 void LSystem::draw(Colour _colour)
 {
-    Point position(0.0, -2.0, 0.0);  // start draw position
-    Point direction(0.4, 1.0, 0.0); // direction is a unit vector lies on y-axis
+    Point position(0.0, -2.0, 0.0);  // start draw position    
+    Point direction(0.3, 1.0, 0.1); // direction is a unit vector lies on y-axis
     Colour colour = _GREEN_;        // initial colour to draw
     stack<DrawState> st;            // stack saves: position, direction and colour
 
-    map<char, Phenotype>::iterator it;
-    // cerr << "L-system drawing: " << this->currentGenotype << endl;
+    map<char, Phenotype>::iterator it;    
     for (auto c : this->currentGenotype)
     {
         if (this->phenotypes.find(c) == this->phenotypes.end())
@@ -82,13 +81,30 @@ void LSystem::draw(Colour _colour)
         {
             // cerr << direction.x << " " << direction.y << " "<< direction.z << endl;
             direction = direction.RotateX(currentPhenotype.option);
-            direction = direction.RotateY(currentPhenotype.option / 5);
-            direction = direction.RotateZ(currentPhenotype.option / 5);
+            direction = direction.RotateY(currentPhenotype.option);
+            // direction = direction.RotateZ(currentPhenotype.option / 5);
             // cerr << direction.x << " " << direction.y << " "<< direction.z << endl;
         }
+        else if (currentPhenotype.ptype == ROTATE_X)
+        {
+            direction = direction.RotateX(currentPhenotype.option);
+        }
+        else if (currentPhenotype.ptype == ROTATE_Y) 
+        {
+            direction = direction.RotateY(currentPhenotype.option);
+        }
+        else if (currentPhenotype.ptype == ROTATE_Z) 
+        {
+            direction = direction.RotateZ(currentPhenotype.option);
+        }
+        else if (currentPhenotype.ptype == TURN_AROUND) 
+        {
+            direction = direction.RotateX(180.0);
+        }
         else if (currentPhenotype.ptype == DRAW_FORWARD)
-        {        
-            double dist = currentPhenotype.option / 10;
+        {      
+            // cerr << position.x << " " << position.y << " " << position.z << endl;  
+            double dist = currentPhenotype.option / 10.0;
             Point nextP(
                 position.x + direction.x * dist,
                 position.y + direction.y * dist,

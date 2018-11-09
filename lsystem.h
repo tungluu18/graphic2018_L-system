@@ -16,7 +16,11 @@ enum phenotype {
     DRAW_CIRCLE, 
     SAVE, 
     RETURN, 
-    ROTATE
+    ROTATE,
+    ROTATE_X,
+    ROTATE_Y,
+    ROTATE_Z,
+    TURN_AROUND
 };
 
 class Phenotype 
